@@ -40,7 +40,7 @@ class TemperatureRPPanel(panelTemplate):
     # Define TemperaturePanel class properties
     feelsLikeIcon = StringProperty('-')
     indoor_temperature = StringProperty('-')
-    Obs_inSensTemp = StringProperty('-')
+    Obs_inSensTemp = ['-', 'c']
 
     # Initialise TemperatureRPPanel
     def __init__(self, **kwargs):
