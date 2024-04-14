@@ -40,7 +40,7 @@ class TemperatureRPPanel(panelTemplate):
     # Define TemperaturePanel class properties
     feelsLikeIcon = StringProperty('-')
     indoor_temperature = StringProperty('-')
-    Obs_inSensTemp = [None, 'c']
+    Obs_inSensTemp = StringProperty('-')
 
     # Initialise TemperatureRPPanel
     def __init__(self, **kwargs):
@@ -50,15 +50,11 @@ class TemperatureRPPanel(panelTemplate):
         self.inSensTemp = None
         self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
         self.set_feels_like_icon()
-        self.set_indoor_temp_display()
 
     # Set "Feels Like" icon
     def set_feels_like_icon(self):
         self.feelsLikeIcon = self.app.CurrentConditions.Obs['FeelsLike'][3]
 
-    # Set whether to display indoor temperature
-    def set_indoor_temp_display(self):
-        self.indoor_temperature = self.app.config['Display']['IndoorTemp']
 
     def get_temperature(self, *largs):
         try:
