@@ -46,8 +46,9 @@ class TemperatureRPPanel(panelTemplate):
         super().__init__(**kwargs)
         self.config = self.app.config
         self.sensor_pin = board.D4
+        self.app.CurrentConditions.Obs['inSensTemp'] = [None, 'c']
         self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
-        self.inSensTemp = -1
+        self.inSensTemp = None
         self.set_feels_like_icon()
         self.set_indoor_temp_display()
 
