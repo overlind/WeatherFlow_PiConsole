@@ -15,27 +15,17 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
+# Load required Raspberry Pi modules
+import board
+import adafruit_dht
+import RPi.GPIO as GPIO
+
 # Load required Kivy modules
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties         import StringProperty
 
 # Load required panel modules
 from panels.template         import panelTemplate
-
-
-def is_raspberry_pi():
-    """Check if the hardware is a Raspberry Pi."""
-    try:
-        with open('/proc/cpuinfo', 'r') as f:
-            return 'BCM' in f.read()
-    except Exception:
-        return False
-
-
-if is_raspberry_pi():
-    import board
-    import adafruit_dht
-    import RPi.GPIO as GPIO
 
 
 # ==============================================================================
