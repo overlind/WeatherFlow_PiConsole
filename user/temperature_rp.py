@@ -58,11 +58,10 @@ class TemperatureRPPanel(panelTemplate):
             GPIO.setup(self.sensor_pin.id, GPIO.IN)
             # Attempt to get a temperature and humidity reading
             dht_sensor = adafruit_dht.DHT22(self.sensor_pin, use_pulseio=False)
-            self.app.CurrentConditions.Obs['inTemp'] = dht_sensor.temperature
+            self.app.CurrentConditions.Obs['inTemp'] = [dht_sensor.temperature, 'c']
             # self.app.CurrentConditions.Obs['inTempMax'] = self.inTemp
             # self.app.CurrentConditions.Obs['inTempMin'] = self.inTemp
             # self.humidity = dht_sensor.humidity
-            dht_sensor.exit()
             # GPIO.cleanup()
             # light_state = GPIO.input(LIGHT_PIN.id)
             # light_condition = "On" if light_state == GPIO.LOW else "Off"
@@ -86,6 +85,8 @@ class TemperatureRPPanel(panelTemplate):
             # GPIO.setup(self.sensor_pin.id, GPIO.IN)
             # GPIO.setup(LIGHT_PIN.id, GPIO.IN)
             # continue
+        finally:
+            dht_sensor.exit()
 
 
 class TemperatureRPButton(RelativeLayout):
