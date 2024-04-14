@@ -23,6 +23,7 @@ import RPi.GPIO as GPIO
 # Load required Kivy modules
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties         import StringProperty
+from kivy.clock              import Clock
 
 # Load required panel modules
 from panels.template         import panelTemplate
@@ -40,6 +41,7 @@ class TemperatureRPPanel(panelTemplate):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.sensor_pin = board.D4
+        self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
         self.set_feels_like_icon()
         self.set_indoor_temp_display()
 
@@ -50,7 +52,6 @@ class TemperatureRPPanel(panelTemplate):
     # Set whether to display indoor temperature
     def set_indoor_temp_display(self):
         self.indoor_temperature = self.app.config['Display']['IndoorTemp']
-        self.get_temperature()
 
     def get_temperature(self):
         try:
