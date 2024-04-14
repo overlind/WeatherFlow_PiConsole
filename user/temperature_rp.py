@@ -53,7 +53,7 @@ class TemperatureRPPanel(panelTemplate):
     def set_indoor_temp_display(self):
         self.indoor_temperature = self.app.config['Display']['IndoorTemp']
 
-    def get_temperature(self):
+    def get_temperature(self, *largs):
         try:
             GPIO.setmode(GPIO.BCM)
             GPIO.setup(self.sensor_pin.id, GPIO.IN)
