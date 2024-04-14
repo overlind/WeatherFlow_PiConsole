@@ -20,6 +20,10 @@ import board
 import adafruit_dht
 import RPi.GPIO as GPIO
 
+# Import required library modules
+from lib             import derived_variables  as derive
+from lib             import observation_format as observation
+
 # Load required Kivy modules
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties         import StringProperty
@@ -40,8 +44,10 @@ class TemperatureRPPanel(panelTemplate):
     # Initialise TemperatureRPPanel
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.config = self.app.config
         self.sensor_pin = board.D4
         self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
+        self.inSensTemp = -1
         self.set_feels_like_icon()
         self.set_indoor_temp_display()
 
@@ -59,7 +65,15 @@ class TemperatureRPPanel(panelTemplate):
             GPIO.setup(self.sensor_pin.id, GPIO.IN)
             # Attempt to get a temperature and humidity reading
             dht_sensor = adafruit_dht.DHT22(self.sensor_pin, use_pulseio=False)
-            self.app.CurrentConditions.Obs['inTemp'] = [f"{dht_sensor.temperature:.1f}", 'c']
+            self.inSensTemp = dht_sensor.temperature or self.inSensTemp
+            self.app.CurrentConditions.Obs['inSensTemp'] = [f"{self.inSensTemp:.1f}", 'c']
+
+            # humidity = observation.units(self.device_obs['humidity'], self.config['Units']['Other'])
+            inTemp = observation.units(self.app.CurrentConditions.Obs['inSensTemp'], self.config['Units']['Temp'])
+
+            # self.display_obs['Humidity'] = observation.format(humidity, 'Humidity')
+            self.app.CurrentConditions.Obs['inSensTemp'] = observation.format(inTemp, 'Temp')
+
             # self.app.CurrentConditions.Obs['inTempMax'] = self.inTemp
             # self.app.CurrentConditions.Obs['inTempMin'] = self.inTemp
             # self.humidity = dht_sensor.humidity

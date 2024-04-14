@@ -32,34 +32,34 @@
         size_hint_x: (131/262)
         opacity: 1 if root.indoor_temperature == '1' else 0
     LargeField:
-        text: app.CurrentConditions.Obs['inTemp'][0] + app.CurrentConditions.Obs['inTemp'][1]
+        text: app.CurrentConditions.Obs['inSensTemp'][0] + app.CurrentConditions.Obs['inSensTemp'][1]
         pos_hint: {'x': 0/262, 'y': 132/202}
         size_hint_x: (131/262)
-        opacity: 1 if root.indoor_temperature == '1' else 0
+        opacity: 1  # if root.indoor_temperature == '1' else 0
 
-    ## Indoor temperature minimum
-    MediumField:
-        text: '[size=' + str(int(self.font_size*0.88)) + '][color=00a4b4ff]' + app.CurrentConditions.Obs['inTempMin'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMin'][1] + '[/color][/size][/size]'
-        pos_hint: {'x': 0/262, 'y': 106/202}
-        size_hint_x: (65.5/262)
-        opacity: 1 if root.indoor_temperature == '1' else 0
-    SmallField:
-        text: app.CurrentConditions.Obs['inTempMin'][2]
-        pos_hint: {'x': 0/262, 'y': 86/202}
-        size_hint_x: (65.5/262)
-        opacity: 1 if root.indoor_temperature == '1' else 0
+    ### Indoor temperature minimum
+    #MediumField:
+    #    text: '[size=' + str(int(self.font_size*0.88)) + '][color=00a4b4ff]' + app.CurrentConditions.Obs['inTempMin'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMin'][1] + '[/color][/size][/size]'
+    #    pos_hint: {'x': 0/262, 'y': 106/202}
+    #    size_hint_x: (65.5/262)
+    #    opacity: 1 if root.indoor_temperature == '1' else 0
+    #SmallField:
+    #    text: app.CurrentConditions.Obs['inTempMin'][2]
+    #    pos_hint: {'x': 0/262, 'y': 86/202}
+    #    size_hint_x: (65.5/262)
+    #    opacity: 1 if root.indoor_temperature == '1' else 0
 
-    ## Indoor temperature maximum
-    MediumField:
-        text: '[size=' + str(int(self.font_size*0.88)) + '][color=f05e40ff]' + app.CurrentConditions.Obs['inTempMax'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMax'][1] + '[/color][/size][/size]'
-        pos_hint: {'x': 65.5/262, 'y': 106/202}
-        size_hint_x: (65.5/262)
-        opacity: 1 if root.indoor_temperature == '1' else 0
-    SmallField:
-        text: app.CurrentConditions.Obs['inTempMax'][2]
-        pos_hint: {'x': 65.5/262, 'y': 86/202}
-        size_hint_x: (65.5/262)
-        opacity: 1 if root.indoor_temperature == '1' else 0
+    ### Indoor temperature maximum
+    #MediumField:
+    #    text: '[size=' + str(int(self.font_size*0.88)) + '][color=f05e40ff]' + app.CurrentConditions.Obs['inTempMax'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMax'][1] + '[/color][/size][/size]'
+    #    pos_hint: {'x': 65.5/262, 'y': 106/202}
+    #    size_hint_x: (65.5/262)
+    #    opacity: 1 if root.indoor_temperature == '1' else 0
+    #SmallField:
+    #    text: app.CurrentConditions.Obs['inTempMax'][2]
+    #    pos_hint: {'x': 65.5/262, 'y': 86/202}
+    #    size_hint_x: (65.5/262)
+    #    opacity: 1 if root.indoor_temperature == '1' else 0
 
     ## Outdoor temperature
     TitleField:
