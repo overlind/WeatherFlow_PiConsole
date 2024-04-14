@@ -30,9 +30,9 @@
         text: 'Indoor'
         pos_hint: {'x': 0/262, 'y': 166/202}
         size_hint_x: (131/262)
-        opacity: 1 if root.indoor_temperature == '1' else 0
+        opacity: 1  # if root.indoor_temperature == '1' else 0
     LargeField:
-        text: app.CurrentConditions.Obs['inSensTemp'][0] + app.CurrentConditions.Obs['inSensTemp'][1]
+        text: root.inSensTemp[0] + root.inSensTemp[1]
         pos_hint: {'x': 0/262, 'y': 132/202}
         size_hint_x: (131/262)
         opacity: 1  # if root.indoor_temperature == '1' else 0

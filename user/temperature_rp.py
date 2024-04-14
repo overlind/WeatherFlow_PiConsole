@@ -46,9 +46,9 @@ class TemperatureRPPanel(panelTemplate):
         super().__init__(**kwargs)
         self.config = self.app.config
         self.sensor_pin = board.D4
-        self.app.CurrentConditions.Obs['inSensTemp'] = [None, 'c']
-        self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
+        self.Obs_inSensTemp = [None, 'c']
         self.inSensTemp = None
+        self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
         self.set_feels_like_icon()
         self.set_indoor_temp_display()
 
@@ -67,13 +67,13 @@ class TemperatureRPPanel(panelTemplate):
             # Attempt to get a temperature and humidity reading
             dht_sensor = adafruit_dht.DHT22(self.sensor_pin, use_pulseio=False)
             self.inSensTemp = dht_sensor.temperature or self.inSensTemp
-            self.app.CurrentConditions.Obs['inSensTemp'] = [f"{self.inSensTemp:.1f}", 'c']
+            self.Obs_inSensTemp = [f"{self.inSensTemp:.1f}", 'c']
 
             # humidity = observation.units(self.device_obs['humidity'], self.config['Units']['Other'])
-            inTemp = observation.units(self.app.CurrentConditions.Obs['inSensTemp'], self.config['Units']['Temp'])
+            inTemp = observation.units(self.Obs_inSensTemp, self.config['Units']['Temp'])
 
             # self.display_obs['Humidity'] = observation.format(humidity, 'Humidity')
-            self.app.CurrentConditions.Obs['inSensTemp'] = observation.format(inTemp, 'Temp')
+            self.Obs_inSensTemp = observation.format(inTemp, 'Temp')
 
             # self.app.CurrentConditions.Obs['inTempMax'] = self.inTemp
             # self.app.CurrentConditions.Obs['inTempMin'] = self.inTemp
