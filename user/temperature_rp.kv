@@ -25,41 +25,41 @@
         _panelTitle: 'Temperature'
         _panelStatus: app.CurrentConditions.Status['out_air_last_sample'] if app.config['Station']['OutAirID'] else app.CurrentConditions.Status['tempest_last_sample']
 
-    ## Indoor temperature
+    ## Indoor temperature  from AIR
     TitleField:
         text: 'Indoor'
         pos_hint: {'x': 0/262, 'y': 166/202}
         size_hint_x: (131/262)
-        opacity: 1  # if root.indoor_temperature == '1' else 0
+        opacity: 1 if root.indoor_temperature == '1' else 0
     LargeField:
-        text: root.Obs_inSensTemp[0] + root.Obs_inSensTemp[1]
+        text: app.CurrentConditions.Obs['inTemp'][0] + app.CurrentConditions.Obs['inTemp'][1]
         pos_hint: {'x': 0/262, 'y': 132/202}
         size_hint_x: (131/262)
-        opacity: 1  # if root.indoor_temperature == '1' else 0
+        opacity: 1 if root.indoor_temperature == '1' else 0
 
-    ### Indoor temperature minimum
-    #MediumField:
-    #    text: '[size=' + str(int(self.font_size*0.88)) + '][color=00a4b4ff]' + app.CurrentConditions.Obs['inTempMin'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMin'][1] + '[/color][/size][/size]'
-    #    pos_hint: {'x': 0/262, 'y': 106/202}
-    #    size_hint_x: (65.5/262)
-    #    opacity: 1 if root.indoor_temperature == '1' else 0
-    #SmallField:
-    #    text: app.CurrentConditions.Obs['inTempMin'][2]
-    #    pos_hint: {'x': 0/262, 'y': 86/202}
-    #    size_hint_x: (65.5/262)
-    #    opacity: 1 if root.indoor_temperature == '1' else 0
+    ## Indoor temperature minimum  from AIR
+    MediumField:
+        text: '[size=' + str(int(self.font_size*0.88)) + '][color=00a4b4ff]' + app.CurrentConditions.Obs['inTempMin'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMin'][1] + '[/color][/size][/size]'
+        pos_hint: {'x': 0/262, 'y': 106/202}
+        size_hint_x: (65.5/262)
+        opacity: 1 if root.indoor_temperature == '1' else 0
+    SmallField:
+        text: app.CurrentConditions.Obs['inTempMin'][2]
+        pos_hint: {'x': 0/262, 'y': 86/202}
+        size_hint_x: (65.5/262)
+        opacity: 1 if root.indoor_temperature == '1' else 0
 
-    ### Indoor temperature maximum
-    #MediumField:
-    #    text: '[size=' + str(int(self.font_size*0.88)) + '][color=f05e40ff]' + app.CurrentConditions.Obs['inTempMax'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMax'][1] + '[/color][/size][/size]'
-    #    pos_hint: {'x': 65.5/262, 'y': 106/202}
-    #    size_hint_x: (65.5/262)
-    #    opacity: 1 if root.indoor_temperature == '1' else 0
-    #SmallField:
-    #    text: app.CurrentConditions.Obs['inTempMax'][2]
-    #    pos_hint: {'x': 65.5/262, 'y': 86/202}
-    #    size_hint_x: (65.5/262)
-    #    opacity: 1 if root.indoor_temperature == '1' else 0
+    ## Indoor temperature maximum  from AIR
+    MediumField:
+        text: '[size=' + str(int(self.font_size*0.88)) + '][color=f05e40ff]' + app.CurrentConditions.Obs['inTempMax'][0] + '[size=' + str(int(self.font_size*0.83)) + ']' + app.CurrentConditions.Obs['inTempMax'][1] + '[/color][/size][/size]'
+        pos_hint: {'x': 65.5/262, 'y': 106/202}
+        size_hint_x: (65.5/262)
+        opacity: 1 if root.indoor_temperature == '1' else 0
+    SmallField:
+        text: app.CurrentConditions.Obs['inTempMax'][2]
+        pos_hint: {'x': 65.5/262, 'y': 86/202}
+        size_hint_x: (65.5/262)
+        opacity: 1 if root.indoor_temperature == '1' else 0
 
     ## Outdoor temperature
     TitleField:
@@ -67,7 +67,7 @@
         pos_hint: {'x': 131/262 if root.indoor_temperature == '1' else 3/262, 'y': 166/202}
         size_hint_x: 131/262
     LargeField:
-        text: app.CurrentConditions.Obs['outTemp'][0] + app.CurrentConditions.Obs['outTemp'][1]
+        text: '[font=fonts/Inter-Bold.ttf][color=ffffffff]' + app.CurrentConditions.Obs['outTemp'][0] + app.CurrentConditions.Obs['outTemp'][1] + '[/color][/font]'
         pos_hint: {'x': 131/262 if root.indoor_temperature == '1' else 3/262, 'y': 132/202}
         size_hint_x: (131/262)
 
@@ -149,18 +149,39 @@
         pos_hint: {'x': 174.660/262, 'y': 43/202}
         size_hint_x: (87.330/262)
 
+    # Replaced w/ Indoor Temp and Humidity from sensor
     ## 'Feels like' icon and text
-    Image:
-        source: 'icons/feelsLike/' + root.feelsLikeIcon + app.scaleSuffix
-        pos_hint: {'x': 7/262, 'y': 7/202}
-        size_hint: (36/262, 31/202)
-        fit_mode: 'contain'
-    SmallField:
-        text: app.CurrentConditions.Obs['FeelsLike'][2]
-        pos_hint: {'x': 49/262, 'y': 10/202}
-        size_hint: (200/262, 17/202)
-        text_size: self.size
-        halign: 'left'
+#    Image:
+#        source: 'icons/feelsLike/' + root.feelsLikeIcon + app.scaleSuffix
+#        pos_hint: {'x': 7/262, 'y': 7/202}
+#        size_hint: (36/262, 31/202)
+#        fit_mode: 'contain'
+#    SmallField:
+#        text: app.CurrentConditions.Obs['FeelsLike'][2]
+#        pos_hint: {'x': 49/262, 'y': 10/202}
+#        size_hint: (200/262, 17/202)
+#        text_size: self.size
+#        halign: 'left'
+
+    ## Indoor temperature from sensor
+    TitleField:
+        text: 'Indoor:'
+        pos_hint: {'x': 0/262, 'y': 17/202}
+        size_hint_x: (65/262)
+    MediumField:
+        text: '[font=fonts/Inter-Bold.ttf][color=ffffffff]' + (str(app.CurrentConditions.Obs['Obs_inSensTemp'][0]) + app.CurrentConditions.Obs['Obs_inSensTemp'][1]) if 'Obs_inSensTemp' in app.CurrentConditions.Obs else '--' + '[/color][/font]'
+        pos_hint: {'x': 74/262, 'y': 15/202}
+        size_hint_x: (43.66/262)
+
+    ## Indoor humidity from sensor
+    TitleField:
+        text: 'Humidity:'
+        pos_hint: {'x': 137/262, 'y': 17/202}
+        size_hint_x: (70/262)
+    MediumField:
+        text: (str(app.CurrentConditions.Obs['Obs_inSensHum'][0]) + app.CurrentConditions.Obs['Obs_inSensHum'][1]) if 'Obs_inSensHum' in app.CurrentConditions.Obs else '--'
+        pos_hint: {'x': 207/262, 'y': 15/202}
+        size_hint_x: (43.66/262)
 
 <TemperatureRPButton>:
     PanelButton:

@@ -21,7 +21,6 @@ import adafruit_dht
 import RPi.GPIO as GPIO
 
 # Import required library modules
-from lib             import derived_variables  as derive
 from lib             import observation_format as observation
 
 # Load required Kivy modules
@@ -40,21 +39,28 @@ class TemperatureRPPanel(panelTemplate):
     # Define TemperaturePanel class properties
     feelsLikeIcon = StringProperty('-')
     indoor_temperature = StringProperty('-')
-    Obs_inSensTemp = ['-', 'c']
 
     # Initialise TemperatureRPPanel
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.config = self.app.config
+        self.app.CurrentConditions.Obs['Obs_inSensTemp'] = ['-', 'c']
+        self.app.CurrentConditions.Obs['Obs_inSensHum'] = ['-', '%']
         self.sensor_pin = board.D4
-        self.inSensTemp = None
+        self.gpio_reset_cnt = 0
+        self.inSensTemp = StringProperty('-')
+        self.inSensHum = StringProperty('-')
         self.sensor_poll = Clock.schedule_interval(self.get_temperature, 10)
         self.set_feels_like_icon()
+        self.set_indoor_temp_display()
 
     # Set "Feels Like" icon
     def set_feels_like_icon(self):
         self.feelsLikeIcon = self.app.CurrentConditions.Obs['FeelsLike'][3]
 
+    # Set whether to display indoor temperature  (from AIR)
+    def set_indoor_temp_display(self):
+        self.indoor_temperature = self.app.config['Display']['IndoorTemp']
 
     def get_temperature(self, *largs):
         try:
@@ -62,44 +68,24 @@ class TemperatureRPPanel(panelTemplate):
             GPIO.setup(self.sensor_pin.id, GPIO.IN)
             # Attempt to get a temperature and humidity reading
             dht_sensor = adafruit_dht.DHT22(self.sensor_pin, use_pulseio=False)
+
             self.inSensTemp = dht_sensor.temperature or self.inSensTemp
-            self.Obs_inSensTemp = [f"{self.inSensTemp:.1f}", 'c']
+            self.inSensHum = dht_sensor.humidity or self.inSensHum
 
-            # humidity = observation.units(self.device_obs['humidity'], self.config['Units']['Other'])
-            inTemp = observation.units(self.Obs_inSensTemp, self.config['Units']['Temp'])
+            inTemp = observation.units([self.inSensTemp, 'c'], self.config['Units']['Temp'])
+            inHum = observation.units([self.inSensHum, '%'], self.config['Units']['Other'])
 
-            # self.display_obs['Humidity'] = observation.format(humidity, 'Humidity')
-            self.Obs_inSensTemp = observation.format(inTemp, 'Temp')
-
-            # self.app.CurrentConditions.Obs['inTempMax'] = self.inTemp
-            # self.app.CurrentConditions.Obs['inTempMin'] = self.inTemp
-            # self.humidity = dht_sensor.humidity
-            # GPIO.cleanup()
-            # light_state = GPIO.input(LIGHT_PIN.id)
-            # light_condition = "On" if light_state == GPIO.LOW else "Off"
-
-            # temperature_farenheit = (9 / 5 * temperature_celsius) + 32
-
-            # Check if the values are valid (e.g., not None)
-            # if temperature_celsius is not None and humidity_percent is not None:
-            #     print(f"Temp: {temperature_celsius:.1f}deg C, "
-            #           f"{temperature_farenheit:.1f}deg F, "
-            #           f"Humidity: {humidity_percent:.1f}%, ")
-            #           # f"Light: {light_condition}")
-            # else:
-            #     print("Failed to retrieve data from the sensor")
+            self.app.CurrentConditions.Obs['Obs_inSensTemp'] = observation.format(inTemp, 'Temp')
+            self.app.CurrentConditions.Obs['Obs_inSensHum'] = observation.format(inHum, 'Other')
 
         except RuntimeError as error:
-            pass
-            # Errors happen fairly often, DHT's are hard to read, just keep going
-            # GPIO.cleanup()
-            # GPIO.setmode(GPIO.BCM)
-            # GPIO.setup(self.sensor_pin.id, GPIO.IN)
-            # GPIO.setup(LIGHT_PIN.id, GPIO.IN)
-            # continue
+            if self.gpio_reset_cnt < 3:
+                self.gpio_reset_cnt += 1
+            elif self.gpio_reset_cnt >= 3:
+                GPIO.cleanup()
+                self.gpio_reset_cnt = 0
         finally:
             dht_sensor.exit()
-
 
 class TemperatureRPButton(RelativeLayout):
     pass
