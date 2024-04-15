@@ -70,7 +70,7 @@ class TemperatureRPPanel(panelTemplate):
             dht_sensor = adafruit_dht.DHT22(self.sensor_pin, use_pulseio=False)
 
             self.inSensTemp = dht_sensor.temperature or self.inSensTemp
-            self.inSensHum = dht_sensor.humidity or self.inSensHum
+            self.inSensHum = int(dht_sensor.humidity) or self.inSensHum
 
             inTemp = observation.units([self.inSensTemp, 'c'], self.config['Units']['Temp'])
             inHum = observation.units([self.inSensHum, '%'], self.config['Units']['Other'])
