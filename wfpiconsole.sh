@@ -101,9 +101,9 @@ KIVY_VERSION="2.2.0"
 KIVY_SOURCE="kivy[base]=="$KIVY_VERSION
 
 # Github repositories
-WFPICONSOLE_REPO="https://github.com/overlind/WeatherFlow_PiConsole.git"
-WFPICONSOLE_TAGS="https://api.github.com/repos/overlind/WeatherFlow_PiConsole/tags"
-WFPICONSOLE_RAW="https://raw.githubusercontent.com/overlind/WeatherFlow_PiConsole"
+WFPICONSOLE_REPO="https://github.com/peted-davis/WeatherFlow_PiConsole.git"
+WFPICONSOLE_TAGS="https://api.github.com/repos/peted-davis/WeatherFlow_PiConsole/tags"
+WFPICONSOLE_RAW="https://raw.githubusercontent.com/peted-davis/WeatherFlow_PiConsole"
 WFPICONSOLE_MAIN_UPDATE=$WFPICONSOLE_RAW"/main/wfpiconsole.sh"
 WFPICONSOLE_BETA_UPDATE=$WFPICONSOLE_RAW"/develop/wfpiconsole.sh"
 
